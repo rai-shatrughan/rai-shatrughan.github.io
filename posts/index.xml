@@ -1,0 +1,56 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on Shatrughan Rai</title>
+        <link>http://rai-shatrughan.github.io/posts/</link>
+        <description>Recent content in Posts on Shatrughan Rai</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Mon, 28 Feb 2022 17:16:34 +0530</lastBuildDate>
+        <atom:link href="http://rai-shatrughan.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Analytics</title>
+            <link>http://rai-shatrughan.github.io/posts/analytics/</link>
+            <pubDate>Mon, 28 Feb 2022 17:16:34 +0530</pubDate>
+            
+            <guid>http://rai-shatrughan.github.io/posts/analytics/</guid>
+            <description>  Spark kafka Sqoop SparkML Redis Cassandra M3DB Grafana   </description>
+            <content type="html"><![CDATA[<blockquote>
+<ul>
+<li>Spark</li>
+<li>kafka</li>
+<li>Sqoop</li>
+<li>SparkML</li>
+<li>Redis</li>
+<li>Cassandra</li>
+<li>M3DB</li>
+<li>Grafana</li>
+</ul>
+</blockquote>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Languages</title>
+            <link>http://rai-shatrughan.github.io/posts/languages/</link>
+            <pubDate>Mon, 28 Feb 2022 17:13:14 +0530</pubDate>
+            
+            <guid>http://rai-shatrughan.github.io/posts/languages/</guid>
+            <description>Golang, Java</description>
+            <content type="html"><![CDATA[<p>Golang, Java</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>About Me</title>
+            <link>http://rai-shatrughan.github.io/posts/about/</link>
+            <pubDate>Mon, 28 Feb 2022 17:09:01 +0530</pubDate>
+            
+            <guid>http://rai-shatrughan.github.io/posts/about/</guid>
+            <description>Modder | Ployglot</description>
+            <content type="html"><![CDATA[<p>Modder | Ployglot</p>
+]]></content>
+        </item>
+        
+    </channel>
+</rss>
