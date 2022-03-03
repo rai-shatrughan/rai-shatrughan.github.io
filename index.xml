@@ -6,7 +6,7 @@
     <description>Recent content on Shatrughan Rai</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 28 Feb 2022 17:16:34 +0530</lastBuildDate><atom:link href="http://rai-shatrughan.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 28 Feb 2022 17:32:46 +0530</lastBuildDate><atom:link href="http://rai-shatrughan.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     
@@ -32,12 +32,39 @@
     
     
     <item>
+      <title>Machine-learning</title>
+      <link>http://rai-shatrughan.github.io/posts/machine-learning/</link>
+      <pubDate>Mon, 28 Feb 2022 17:32:46 +0530</pubDate>
+      
+      <guid>http://rai-shatrughan.github.io/posts/machine-learning/</guid>
+      <description>  Apache MXNet Spark ML Open NLP Open CV   </description>
+    </item>
+    
+    <item>
+      <title>tools</title>
+      <link>http://rai-shatrughan.github.io/posts/tools/</link>
+      <pubDate>Mon, 28 Feb 2022 17:22:42 +0530</pubDate>
+      
+      <guid>http://rai-shatrughan.github.io/posts/tools/</guid>
+      <description>  Docker K8s JMeter   </description>
+    </item>
+    
+    <item>
       <title>Analytics</title>
       <link>http://rai-shatrughan.github.io/posts/analytics/</link>
       <pubDate>Mon, 28 Feb 2022 17:16:34 +0530</pubDate>
       
       <guid>http://rai-shatrughan.github.io/posts/analytics/</guid>
       <description>  Spark kafka Sqoop SparkML Redis Cassandra M3DB Grafana   </description>
+    </item>
+    
+    <item>
+      <title>Frameworks</title>
+      <link>http://rai-shatrughan.github.io/posts/frameworks/</link>
+      <pubDate>Mon, 28 Feb 2022 17:14:17 +0530</pubDate>
+      
+      <guid>http://rai-shatrughan.github.io/posts/frameworks/</guid>
+      <description>  Big Data :  Spark Kafka   Golang :  go-swagger zap viper testify     </description>
     </item>
     
     <item>
