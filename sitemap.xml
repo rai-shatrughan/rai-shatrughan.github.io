@@ -105,6 +105,9 @@
     <loc>http://rai-shatrughan.github.io/posts/analytics/</loc>
     <lastmod>2022-02-28T17:16:34+05:30</lastmod>
   </url><url>
+    <loc>http://rai-shatrughan.github.io/posts/</loc>
+    <lastmod>2022-02-28T17:16:34+05:30</lastmod>
+  </url><url>
     <loc>http://rai-shatrughan.github.io/</loc>
     <lastmod>2022-02-28T17:16:34+05:30</lastmod>
   </url><url>
@@ -114,28 +117,14 @@
     <loc>http://rai-shatrughan.github.io/posts/about/</loc>
     <lastmod>2022-02-28T17:09:01+05:30</lastmod>
   </url><url>
-    <loc>http://rai-shatrughan.github.io/tags/basic/</loc>
-    <lastmod>2020-06-08T08:06:25+06:00</lastmod>
-  </url><url>
-    <loc>http://rai-shatrughan.github.io/categories/basic/</loc>
-    <lastmod>2020-06-08T08:06:25+06:00</lastmod>
-  </url><url>
-    <loc>http://rai-shatrughan.github.io/categories/</loc>
-    <lastmod>2020-06-08T08:06:25+06:00</lastmod>
-  </url><url>
-    <loc>http://rai-shatrughan.github.io/posts/</loc>
-    <lastmod>2020-06-08T08:06:25+06:00</lastmod>
-  </url><url>
-    <loc>http://rai-shatrughan.github.io/tags/multi-lingual/</loc>
-    <lastmod>2020-06-08T08:06:25+06:00</lastmod>
-  </url><url>
-    <loc>http://rai-shatrughan.github.io/tags/</loc>
-    <lastmod>2020-06-08T08:06:25+06:00</lastmod>
-  </url><url>
     <loc>http://rai-shatrughan.github.io/notes/</loc>
     <lastmod>2010-06-08T08:06:25+06:00</lastmod>
   </url><url>
+    <loc>http://rai-shatrughan.github.io/categories/</loc>
+  </url><url>
     <loc>http://rai-shatrughan.github.io/search/</loc>
     <priority>0.1</priority>
+  </url><url>
+    <loc>http://rai-shatrughan.github.io/tags/</loc>
   </url>
 </urlset>
