@@ -6,7 +6,7 @@
     <description>Recent content on Shatrughan Rai</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 28 Feb 2022 17:22:42 +0530</lastBuildDate><atom:link href="http://rai-shatrughan.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 03 Mar 2022 17:22:42 +0530</lastBuildDate><atom:link href="http://rai-shatrughan.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     
@@ -30,6 +30,24 @@
     
     
     
+    
+    <item>
+      <title>kafka-consumer</title>
+      <link>http://rai-shatrughan.github.io/posts/kafka-cosumer/</link>
+      <pubDate>Thu, 03 Mar 2022 17:22:42 +0530</pubDate>
+      
+      <guid>http://rai-shatrughan.github.io/posts/kafka-cosumer/</guid>
+      <description>package main import ( // go modules &amp;#34;encoding/json&amp;#34; &amp;#34;strings&amp;#34; &amp;#34;time&amp;#34; &amp;#34;os&amp;#34; &amp;#34;os/signal&amp;#34; &amp;#34;context&amp;#34; // git modules &amp;#34;github.com/segmentio/kafka-go&amp;#34; &amp;#34;go.uber.org/zap&amp;#34; // websvc modules mw &amp;#34;websvc/middleware&amp;#34; &amp;#34;websvc/timeseries/models&amp;#34; ) var ( topic = &amp;#34;ts&amp;#34; groupID = &amp;#34;ts-consumer-group&amp;#34; chanBufferSize = 10000 kafkaReaderCount = 5 tsParserCount = 10 kvWriterCount = 10 kafkaMsgChan = make(chan kafka.Message, chanBufferSize) tskvChan = make(chan tskv, chanBufferSize*3) kvCounterChan = make(chan int8, chanBufferSize*3) etc = mw.KV{} kf = mw.KafkaReaders{} brokers []string logger = mw.</description>
+    </item>
+    
+    <item>
+      <title>kafka-docker</title>
+      <link>http://rai-shatrughan.github.io/posts/kafka-docker/</link>
+      <pubDate>Thu, 03 Mar 2022 17:22:42 +0530</pubDate>
+      
+      <guid>http://rai-shatrughan.github.io/posts/kafka-docker/</guid>
+      <description>--- version: &amp;#39;2&amp;#39; services: zookeeper1: build: . image: mykafka container_name: zookeeper1 volumes: - zk1:/tmp command: &amp;gt; bash -c &amp;#34;sed -i &amp;#39;s/SR_ZOOKEEPER_SERVER_1/${KAFKA_ZOOKEEPER1_IP}/g&amp;#39; /opt/${KAFKA_DIR}/config/zookeeper.properties &amp;amp;&amp;amp; sed -i &amp;#39;s/SR_ZOOKEEPER_SERVER_2/${KAFKA_ZOOKEEPER2_IP}/g&amp;#39; /opt/${KAFKA_DIR}/config/zookeeper.properties &amp;amp;&amp;amp; sed -i &amp;#39;s/SR_ZOOKEEPER_SERVER_3/${KAFKA_ZOOKEEPER3_IP}/g&amp;#39; /opt/${KAFKA_DIR}/config/zookeeper.properties &amp;amp;&amp;amp; mkdir -p /tmp/zookeeper/ &amp;amp;&amp;amp; touch /tmp/zookeeper/myid &amp;amp;&amp;amp; echo &amp;#34;1&amp;#34; &amp;gt; /tmp/zookeeper/myid &amp;amp;&amp;amp; nohup bin/zookeeper-server-start.sh config/zookeeper.properties&amp;#34; expose: - &amp;#34;2181&amp;#34; - &amp;#34;2888&amp;#34; - &amp;#34;3888&amp;#34; networks: sr_cluster_network: ipv4_address: ${KAFKA_ZOOKEEPER1_IP} zookeeper2: build: . image: mykafka container_name: zookeeper2 volumes: - zk2:/tmp command: &amp;gt; bash -c &amp;#34;sed -i &amp;#39;s/SR_ZOOKEEPER_SERVER_1/${KAFKA_ZOOKEEPER1_IP}/g&amp;#39; /opt/${KAFKA_DIR}/config/zookeeper.</description>
+    </item>
     
     <item>
       <title>frameworks and tools</title>

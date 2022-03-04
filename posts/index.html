@@ -105,6 +105,24 @@
     <li><a class="" href="/posts/frameworks-tools/" title="frameworks-tools">frameworks-tools</a></li>
   
 
+  
+  
+  
+  
+  
+    
+    <li><a class="" href="/posts/kafka-cosumer/" title="kafka-consumer">kafka-consumer</a></li>
+  
+
+  
+  
+  
+  
+  
+    
+    <li><a class="" href="/posts/kafka-docker/" title="kafka-docker">kafka-docker</a></li>
+  
+
 
             </div>
           </ul>
@@ -121,6 +139,56 @@
     <div class="container-fluid post-card-holder" id="post-card-holder">
       
       
+      
+        
+          <div class="post-card">
+  <a href="/posts/kafka-cosumer/" class="post-card-link">
+    <div class="card">
+      <div class="card-head">
+        <img class="card-img-top" src='/images/default-hero.jpg' alt="Hero Image">
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">kafka-consumer</h5>
+        <p class="card-text post-summary">package main import ( // go modules &#34;encoding/json&#34; &#34;strings&#34; &#34;time&#34; &#34;os&#34; &#34;os/signal&#34; &#34;context&#34; // git modules &#34;github.com/segmentio/kafka-go&#34; &#34;go.uber.org/zap&#34; // websvc modules mw &#34;websvc/middleware&#34; &#34;websvc/timeseries/models&#34; ) var ( topic = &#34;ts&#34; groupID = &#34;ts-consumer-group&#34; chanBufferSize = 10000 kafkaReaderCount = 5 tsParserCount = 10 kvWriterCount = 10 kafkaMsgChan = make(chan kafka.Message, chanBufferSize) tskvChan = make(chan tskv, chanBufferSize*3) kvCounterChan = make(chan int8, chanBufferSize*3) etc = mw.KV{} kf = mw.KafkaReaders{} brokers []string logger = mw.</p>
+      </div>
+      <div class="card-footer">
+        <span class="float-left">March 3, 2022</span>
+        <a
+        href="/posts/kafka-cosumer/"
+        class="float-right btn btn-outline-info btn-sm"
+        >Read</a
+        >
+      </div>
+    </div>
+  </a>
+</div>
+
+        
+      
+        
+          <div class="post-card">
+  <a href="/posts/kafka-docker/" class="post-card-link">
+    <div class="card">
+      <div class="card-head">
+        <img class="card-img-top" src='/images/default-hero.jpg' alt="Hero Image">
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">kafka-docker</h5>
+        <p class="card-text post-summary">--- version: &#39;2&#39; services: zookeeper1: build: . image: mykafka container_name: zookeeper1 volumes: - zk1:/tmp command: &gt; bash -c &#34;sed -i &#39;s/SR_ZOOKEEPER_SERVER_1/${KAFKA_ZOOKEEPER1_IP}/g&#39; /opt/${KAFKA_DIR}/config/zookeeper.properties &amp;&amp; sed -i &#39;s/SR_ZOOKEEPER_SERVER_2/${KAFKA_ZOOKEEPER2_IP}/g&#39; /opt/${KAFKA_DIR}/config/zookeeper.properties &amp;&amp; sed -i &#39;s/SR_ZOOKEEPER_SERVER_3/${KAFKA_ZOOKEEPER3_IP}/g&#39; /opt/${KAFKA_DIR}/config/zookeeper.properties &amp;&amp; mkdir -p /tmp/zookeeper/ &amp;&amp; touch /tmp/zookeeper/myid &amp;&amp; echo &#34;1&#34; &gt; /tmp/zookeeper/myid &amp;&amp; nohup bin/zookeeper-server-start.sh config/zookeeper.properties&#34; expose: - &#34;2181&#34; - &#34;2888&#34; - &#34;3888&#34; networks: sr_cluster_network: ipv4_address: ${KAFKA_ZOOKEEPER1_IP} zookeeper2: build: . image: mykafka container_name: zookeeper2 volumes: - zk2:/tmp command: &gt; bash -c &#34;sed -i &#39;s/SR_ZOOKEEPER_SERVER_1/${KAFKA_ZOOKEEPER1_IP}/g&#39; /opt/${KAFKA_DIR}/config/zookeeper.</p>
+      </div>
+      <div class="card-footer">
+        <span class="float-left">March 3, 2022</span>
+        <a
+        href="/posts/kafka-docker/"
+        class="float-right btn btn-outline-info btn-sm"
+        >Read</a
+        >
+      </div>
+    </div>
+  </a>
+</div>
+
+        
       
         
           <div class="post-card">

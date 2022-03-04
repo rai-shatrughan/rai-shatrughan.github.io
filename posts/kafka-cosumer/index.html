@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>frameworks and tools</title>
+    <title>kafka-consumer</title>
     <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -21,18 +21,18 @@
 
 
 
-<meta property="og:title" content="frameworks and tools" />
-<meta property="og:description" content="frameworks and tools" />
+<meta property="og:title" content="kafka-consumer" />
+<meta property="og:description" content="consumer for kafka" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://rai-shatrughan.github.io/posts/frameworks-tools/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-02-28T17:22:42+05:30" />
-<meta property="article:modified_time" content="2022-02-28T17:22:42+05:30" />
+<meta property="og:url" content="http://rai-shatrughan.github.io/posts/kafka-cosumer/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-03-03T17:22:42+05:30" />
+<meta property="article:modified_time" content="2022-03-03T17:22:42+05:30" />
 
 
 
     
     
-<meta name="description" content="frameworks and tools" />
+<meta name="description" content="consumer for kafka" />
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css"
@@ -104,21 +104,21 @@
   
   
   
-    
-    
-  
   
     
-    <li><a class="active" href="/posts/frameworks-tools/" title="frameworks-tools">frameworks-tools</a></li>
+    <li><a class="" href="/posts/frameworks-tools/" title="frameworks-tools">frameworks-tools</a></li>
   
 
   
   
   
   
+    
+    
+  
   
     
-    <li><a class="" href="/posts/kafka-cosumer/" title="kafka-consumer">kafka-consumer</a></li>
+    <li><a class="active" href="/posts/kafka-cosumer/" title="kafka-consumer">kafka-consumer</a></li>
   
 
   
@@ -153,49 +153,177 @@
         <div class="author-profile ml-auto align-self-lg-center">
           <img class="rounded-circle" src='/images/johny.gif' alt="Author Image">
           <h5 class="author-name"></h5>
-          <p>Monday, February 28, 2022</p>
+          <p>Thursday, March 3, 2022</p>
         </div>
 
         <div class="title">
-          <h1>frameworks and tools</h1>
+          <h1>kafka-consumer</h1>
         </div>
         
         <div class="post-content" id="post-content">
-          <p><strong>Frameworks</strong></p>
-<blockquote>
-<ul>
-<li>Big Data :
-<ul>
-<li>Spark, Kafka</li>
-<li>Cassandra, Druid, Flink, Redis, m3db.io</li>
-</ul>
-</li>
-<li>Golang :
-<ul>
-<li>go-swagger, zap, viper, testify</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<p><strong>Machine-Learning</strong></p>
-<blockquote>
-<ul>
-<li>Apache MXNet</li>
-<li>Spark ML</li>
-<li>Open NLP</li>
-<li>Open CV</li>
-</ul>
-</blockquote>
-<p><strong>Tools</strong></p>
-<blockquote>
-<ul>
-<li>Grafana</li>
-<li>Docker</li>
-<li>K8s</li>
-<li>JMeter</li>
-</ul>
-</blockquote>
+          <pre tabindex="0"><code>package main
 
+import (
+	// go modules
+	&#34;encoding/json&#34;
+	&#34;strings&#34;
+	&#34;time&#34;
+	&#34;os&#34;
+	&#34;os/signal&#34;
+	&#34;context&#34;
+
+	// git modules
+	&#34;github.com/segmentio/kafka-go&#34;
+	&#34;go.uber.org/zap&#34;
+
+	// websvc modules
+	mw &#34;websvc/middleware&#34;
+	&#34;websvc/timeseries/models&#34;
+)
+
+var (
+	topic            = &#34;ts&#34;
+	groupID          = &#34;ts-consumer-group&#34;
+	chanBufferSize   = 10000
+	kafkaReaderCount = 5
+	tsParserCount    = 10
+	kvWriterCount    = 10
+	kafkaMsgChan     = make(chan kafka.Message, chanBufferSize)
+	tskvChan         = make(chan tskv, chanBufferSize*3)
+	kvCounterChan    = make(chan int8, chanBufferSize*3)
+	etc              = mw.KV{}
+	kf               = mw.KafkaReaders{}
+	brokers          []string
+	logger           = mw.Logger{}
+	ctx, cancel = context.WithCancel(context.Background())
+)
+
+type tskv struct {
+	key   string
+	value string
+}
+
+func init() {
+	conf := mw.Config{}
+	conf.New()
+
+	logger.New()
+
+	brokers = conf.GetStringSlice(&#34;kafka.brokers&#34;)
+	kf.GroupID = &amp;groupID
+	kf.Topic = &amp;topic
+	kf.Brokers = brokers
+	kf.New(kafkaReaderCount)
+
+	etc.New()
+}
+
+func main() {
+	groupConsumer()
+}
+
+func groupConsumer() {
+	done := make(chan bool)
+	for i := 0; i &lt; kafkaReaderCount; i++ {
+		go readKafkaMsg(kf.Readers[i], kafkaMsgChan)
+	}
+
+	for i := 0; i &lt; tsParserCount; i++ {
+		go parseKafkaMsg(kafkaMsgChan, tskvChan)
+	}
+
+	for i := 0; i &lt; kvWriterCount; i++ {
+		go writeKV(tskvChan, kvCounterChan)
+	}
+
+	go msgCounter(kvCounterChan)
+
+	quitHandler()
+	&lt;-done
+}
+
+func msgCounter(kvCounterChan &lt;-chan int8) {
+	var kvCounter int64
+	for {
+		select {
+		case &lt;-ctx.Done():
+			logger.Info(&#34;stopping counter&#34;)
+			return
+		case &lt;-kvCounterChan:
+			kvCounter++
+			logger.Info(&#34;Total messages written to etcd&#34;, zap.Int64(&#34;count&#34;, kvCounter))
+		}
+	}
+
+}
+
+func writeKV(tskvChan &lt;-chan tskv, kvCounterChan chan&lt;- int8) {
+	for {
+		select {
+		case &lt;-ctx.Done():
+			logger.Info(&#34;stopping parser&#34;)
+			return
+		default:
+			kv := &lt;-tskvChan
+			etc.Put(kv.key, kv.value)
+			kvCounterChan &lt;- 1
+		}
+	}
+
+}
+
+func parseKafkaMsg(msgChan &lt;-chan kafka.Message, tskvChan chan&lt;- tskv) {
+	for {
+		select {
+		case &lt;-ctx.Done():
+			logger.Info(&#34;stopping parser&#34;)
+			return
+		default:		
+			start := time.Now()
+			msg := &lt;-msgChan
+			tsa := models.TimeseriesArray{}
+			json.Unmarshal(msg.Value, &amp;tsa)
+			for i := range tsa {
+				date := strings.Split(tsa[i].Timestamp.String(), &#34;T&#34;)
+
+				key := &#34;/&#34; + string(msg.Key) + &#34;/&#34; + date[0] + &#34;/&#34; + tsa[i].Timestamp.String()
+				logger.Debug(key)
+
+				ts, _ := json.Marshal(tsa[i])
+				val := string(ts)
+				logger.Debug(val)
+				tskvChan &lt;- tskv{key: key, value: val}
+			}
+			logger.Info(&#34;Time elapsed for parser&#34;,
+				zap.String(&#34;duration&#34;, time.Since(start).String()),
+			)
+		}
+	}
+}
+
+func readKafkaMsg(reader *kafka.Reader, kafkaMsgChan chan&lt;- kafka.Message){
+	for {
+		select {
+		case &lt;-ctx.Done():
+			logger.Info(&#34;stopping reader&#34;)
+			return
+		default:
+			kafkaMsgChan &lt;- kf.Read(reader)
+		}
+		
+	}
+}
+
+func quitHandler() {
+	sig := make(chan os.Signal, 1)
+	signal.Notify(sig, os.Interrupt)
+	go func() {
+		&lt;-sig
+		logger.Info(&#34;\r- Ctrl+C pressed - stopping writer now&#34;)
+		cancel()
+	}()
+}
+</code></pre>
         </div>
 
         
@@ -233,11 +361,11 @@
 
 
   
-    
-    
-  
   
 
+  
+    
+    
   
   
 
@@ -247,13 +375,22 @@
 
 <div class="row next-prev-navigator">
   
+    <div class="col-md-6 previous-article">
+      <a href="/posts/frameworks-tools/" title="frameworks and tools" class="btn btn-outline-info">
+        <div><i class="fas fa-chevron-circle-left"></i> Prev</div>
+        <div class="next-prev-text">frameworks and tools</div>
+      </a>
+    </div>
+  
   
       
       
-      <div class="col-md-12 next-article">
-        <a href="/posts/kafka-cosumer/" title="kafka-consumer" class="btn btn-outline-info">
+        
+      
+      <div class="col-md-6 next-article">
+        <a href="/posts/kafka-docker/" title="kafka-docker" class="btn btn-outline-info">
           <div>Next <i class="fas fa-chevron-circle-right"></i></div>
-          <div class="next-prev-text">kafka-consumer</div>
+          <div class="next-prev-text">kafka-docker</div>
         </a>
       </div>
     

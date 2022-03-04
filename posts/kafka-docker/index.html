@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>kafka-docker</title>
+    <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/css/layouts/main.css"/>
+<link rel="stylesheet" href="/css/navigators/navbar.css"/>
+<link rel="stylesheet" href="/css/plyr.css"/>
+<link rel="stylesheet" href="/css/flag-icon.min.css"/>
+<link rel="stylesheet" href="/css/katex.min.css">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" />
+
+
+
+
+<meta property="og:title" content="kafka-docker" />
+<meta property="og:description" content="docker for kafka" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://rai-shatrughan.github.io/posts/kafka-docker/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-03-03T17:22:42+05:30" />
+<meta property="article:modified_time" content="2022-03-03T17:22:42+05:30" />
+
+
+
+    
+    
+<meta name="description" content="docker for kafka" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/atom-one-dark.min.css"
+/>
+<link rel="stylesheet" href="/css/layouts/single.css"/>
+<link rel="stylesheet" href="/css/navigators/sidebar.css">
+
+<link rel="stylesheet" href="/css/style.css"/>
+
+
+
+    
+    
+  </head>
+
+  <body data-spy="scroll" data-target="#TableOfContents" data-offset="80">
+    <div class="container-fluid bg-dimmed wrapper">
+      
+      
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-xl top-navbar final-navbar shadow">
+  <div class="container">
+      <button class="navbar-toggler navbar-light" id="sidebar-toggler" type="button" onclick="toggleSidebar()">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="/">
+      Shatrughan Rai</a>
+    
+
+    <div class="collapse navbar-collapse lang-selector" id="top-nav-items">
+      <ul class="navbar-nav ml-auto">
+      
+      </ul>
+    </div>
+  </div>
+  
+  
+  
+</nav>
+
+
+
+      
+      
+  <section class="sidebar-section" id="sidebar-section">
+    <div class="sidebar-holder">
+      <div class="sidebar" id="sidebar">
+        <form class="mx-auto" method="get" action="/search">
+          <input type="text" name="keyword" value="" placeholder="Search" data-search="" id="search-box" />
+        </form>
+        <div class="sidebar-tree">
+          <ul class="tree" id="tree">
+            <li id="list-heading"><a href="/posts" data-filter="all">Posts</a></li>
+            <div class="subtree">
+                
+  
+  
+  
+  
+  
+    
+    <li><a class="" href="/posts/frameworks-tools/" title="frameworks-tools">frameworks-tools</a></li>
+  
+
+  
+  
+  
+  
+  
+    
+    <li><a class="" href="/posts/kafka-cosumer/" title="kafka-consumer">kafka-consumer</a></li>
+  
+
+  
+  
+  
+  
+    
+    
+  
+  
+    
+    <li><a class="active" href="/posts/kafka-docker/" title="kafka-docker">kafka-docker</a></li>
+  
+
+
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+      
+      
+<section class="content-section" id="content-section">
+  <div class="content">
+    <div class="container p-0 read-area">
+      
+      <div class="hero-area col-sm-12" id="hero-area" style='background-image: url(http://rai-shatrughan.github.io/images/default-hero.jpg);'>
+      </div>
+
+      
+      <div class="page-content">
+        <div class="author-profile ml-auto align-self-lg-center">
+          <img class="rounded-circle" src='/images/johny.gif' alt="Author Image">
+          <h5 class="author-name"></h5>
+          <p>Thursday, March 3, 2022</p>
+        </div>
+
+        <div class="title">
+          <h1>kafka-docker</h1>
+        </div>
+        
+        <div class="post-content" id="post-content">
+          <pre tabindex="0"><code>---
+version: &#39;2&#39;
+services:
+
+  zookeeper1:
+    build: .
+    image: mykafka
+    container_name: zookeeper1
+    volumes:
+      - zk1:/tmp
+    command: &gt;
+        bash -c &#34;sed -i &#39;s/SR_ZOOKEEPER_SERVER_1/${KAFKA_ZOOKEEPER1_IP}/g&#39; /opt/${KAFKA_DIR}/config/zookeeper.properties &amp;&amp;
+             sed -i &#39;s/SR_ZOOKEEPER_SERVER_2/${KAFKA_ZOOKEEPER2_IP}/g&#39; /opt/${KAFKA_DIR}/config/zookeeper.properties &amp;&amp;
+             sed -i &#39;s/SR_ZOOKEEPER_SERVER_3/${KAFKA_ZOOKEEPER3_IP}/g&#39; /opt/${KAFKA_DIR}/config/zookeeper.properties &amp;&amp; 
+             mkdir -p /tmp/zookeeper/ &amp;&amp;
+             touch /tmp/zookeeper/myid &amp;&amp;
+             echo &#34;1&#34; &gt; /tmp/zookeeper/myid &amp;&amp;
+             nohup bin/zookeeper-server-start.sh config/zookeeper.properties&#34;  
+    expose:
+      - &#34;2181&#34;
+      - &#34;2888&#34;
+      - &#34;3888&#34;
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${KAFKA_ZOOKEEPER1_IP}
+  
+  zookeeper2:
+    build: .
+    image: mykafka
+    container_name: zookeeper2
+    volumes:
+      - zk2:/tmp
+    command: &gt;
+        bash -c &#34;sed -i &#39;s/SR_ZOOKEEPER_SERVER_1/${KAFKA_ZOOKEEPER1_IP}/g&#39; /opt/${KAFKA_DIR}/config/zookeeper.properties &amp;&amp;
+             sed -i &#39;s/SR_ZOOKEEPER_SERVER_2/${KAFKA_ZOOKEEPER2_IP}/g&#39; /opt/${KAFKA_DIR}/config/zookeeper.properties &amp;&amp;
+             sed -i &#39;s/SR_ZOOKEEPER_SERVER_3/${KAFKA_ZOOKEEPER3_IP}/g&#39; /opt/${KAFKA_DIR}/config/zookeeper.properties &amp;&amp; 
+             mkdir -p /tmp/zookeeper/ &amp;&amp;
+             touch /tmp/zookeeper/myid &amp;&amp;
+             echo &#34;2&#34; &gt; /tmp/zookeeper/myid &amp;&amp;
+             nohup bin/zookeeper-server-start.sh config/zookeeper.properties&#34;    
+    expose:
+      - &#34;2181&#34;
+      - &#34;2888&#34;
+      - &#34;3888&#34;
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${KAFKA_ZOOKEEPER2_IP}
+  
+  zookeeper3:
+    build: .
+    image: mykafka
+    container_name: zookeeper3
+    volumes:
+      - zk3:/tmp
+    command: &gt;
+        bash -c &#34;sed -i &#39;s/SR_ZOOKEEPER_SERVER_1/${KAFKA_ZOOKEEPER1_IP}/g&#39; /opt/${KAFKA_DIR}/config/zookeeper.properties &amp;&amp;
+             sed -i &#39;s/SR_ZOOKEEPER_SERVER_2/${KAFKA_ZOOKEEPER2_IP}/g&#39; /opt/${KAFKA_DIR}/config/zookeeper.properties &amp;&amp;
+             sed -i &#39;s/SR_ZOOKEEPER_SERVER_3/${KAFKA_ZOOKEEPER3_IP}/g&#39; /opt/${KAFKA_DIR}/config/zookeeper.properties &amp;&amp; 
+             mkdir -p /tmp/zookeeper/ &amp;&amp;
+             touch /tmp/zookeeper/myid &amp;&amp;
+             echo &#34;3&#34; &gt; /tmp/zookeeper/myid &amp;&amp;
+             nohup bin/zookeeper-server-start.sh config/zookeeper.properties&#34;   
+    expose:
+      - &#34;2181&#34;
+      - &#34;2888&#34;
+      - &#34;3888&#34;
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${KAFKA_ZOOKEEPER3_IP}
+
+
+  kafka1:
+    build: .
+    image: mykafka
+    container_name: kafka1
+    volumes:
+      - kfk1:/tmp 
+    command: &gt;
+        bash -c &#34;sudo sed -i &#39;s/SR_BROKER_ID/1/g&#39; /opt/${KAFKA_DIR}/config/server.properties &amp;&amp;
+             sudo sed -i &#39;s/SR_BROKER_LISTENERS_HOST_PORT/${KAFKA1_IP}:9092/g&#39; /opt/${KAFKA_DIR}/config/server.properties &amp;&amp;
+             sudo sed -i &#39;s/SR_ZOOKEEPER_HOST_PORT/${KAFKA_ZOOKEEPER1_IP}:2181,${KAFKA_ZOOKEEPER2_IP}:2181,${KAFKA_ZOOKEEPER3_IP}:2181/g&#39; /opt/${KAFKA_DIR}/config/server.properties &amp;&amp;
+             nohup bin/kafka-server-start.sh config/server.properties&#34;  
+    expose:
+      - &#34;9092&#34;
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${KAFKA1_IP}
+
+  kafka2:
+    build: .
+    image: mykafka
+    container_name: kafka2
+    volumes:
+      - kfk2:/tmp
+    command: &gt;
+        bash -c &#34;sudo sed -i &#39;s/SR_BROKER_ID/2/g&#39; /opt/${KAFKA_DIR}/config/server.properties &amp;&amp;
+             sudo sed -i &#39;s/SR_BROKER_LISTENERS_HOST_PORT/${KAFKA2_IP}:9092/g&#39; /opt/${KAFKA_DIR}/config/server.properties &amp;&amp;
+             sudo sed -i &#39;s/SR_ZOOKEEPER_HOST_PORT/${KAFKA_ZOOKEEPER1_IP}:2181,${KAFKA_ZOOKEEPER2_IP}:2181,${KAFKA_ZOOKEEPER3_IP}:2181/g&#39; /opt/${KAFKA_DIR}/config/server.properties &amp;&amp;
+             nohup bin/kafka-server-start.sh config/server.properties&#34;   
+    expose:
+      - &#34;9092&#34;
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${KAFKA2_IP}
+  
+  kafka3:
+    build: .
+    image: mykafka    
+    container_name: kafka3
+    volumes:
+      - kfk3:/tmp
+    command: &gt;
+        bash -c &#34;sudo sed -i &#39;s/SR_BROKER_ID/3/g&#39; /opt/${KAFKA_DIR}/config/server.properties &amp;&amp;
+             sudo sed -i &#39;s/SR_BROKER_LISTENERS_HOST_PORT/${KAFKA3_IP}:9092/g&#39; /opt/${KAFKA_DIR}/config/server.properties &amp;&amp;
+             sudo sed -i &#39;s/SR_ZOOKEEPER_HOST_PORT/${KAFKA_ZOOKEEPER1_IP}:2181,${KAFKA_ZOOKEEPER2_IP}:2181,${KAFKA_ZOOKEEPER3_IP}:2181/g&#39; /opt/${KAFKA_DIR}/config/server.properties &amp;&amp;
+             nohup bin/kafka-server-start.sh config/server.properties&#34;  
+    expose:
+      - &#34;9092&#34;
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${KAFKA3_IP}
+
+volumes:
+    zk1:
+      driver: local
+      driver_opts:
+        o: bind
+        device: /data/zk1
+    zk2:
+      driver: local
+      driver_opts:
+        o: bind
+        device: /data/zk2
+    zk3:
+      driver: local
+      driver_opts:
+        o: bind
+        device: /data/zk3
+    kfk1:
+      driver: local
+      driver_opts:
+        o: bind
+        device: /data/kfk1
+    kfk2:
+      driver: local
+      driver_opts:
+        o: bind
+        device: /data/kfk2
+    kfk3:
+      driver: local
+      driver_opts:
+        o: bind
+        device: /data/kfk3
+
+networks:
+  sr_cluster_network:
+    external: true
+</code></pre>
+        </div>
+
+        
+        <div class="row pl-3 pr-3">
+        
+        <div class="col-md-6 share-buttons">
+        
+          </div>
+
+        
+        
+          
+            
+          
+
+        
+        </div>
+
+
+
+      
+      <hr />
+        
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+    
+    
+  
+  
+
+
+<div class="row next-prev-navigator">
+  
+    <div class="col-md-6 previous-article">
+      <a href="/posts/kafka-cosumer/" title="kafka-consumer" class="btn btn-outline-info">
+        <div><i class="fas fa-chevron-circle-left"></i> Prev</div>
+        <div class="next-prev-text">kafka-consumer</div>
+      </a>
+    </div>
+  
+  
+</div>
+
+      <hr />
+
+      
+      
+      
+      
+
+      </div>
+    </div>
+  </div>
+  
+  <a id="scroll-to-top" class="btn"><i class="fas fa-chevron-circle-up"></i></a>
+  
+</section>
+
+
+      
+      
+    </div>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+  
+      
+  
+
+
+
+  
+  
+
+  
+  
+    
+  
+
+  
+  
+
+  
+  
+
+
+  
+  
+  
+
+  
+  
+  
+
+  
+  
+  
+    
+  
+  
+
+  
+  
+  
+
+  <footer id="footer" class="container-fluid text-center align-content-center footer pb-2">
+    <div class="container pt-5">
+      <div class="row text-left">
+        
+        <div class="col-md-4 col-sm-12">
+          <h5>Navigation</h5>
+          
+          <ul>
+              
+                
+                
+                  
+                
+                <li class="nav-item">
+                  <a class="smooth-scroll" href="http://rai-shatrughan.github.io/#about">About</a>
+                </li>
+              
+              
+                
+                
+                  
+                
+                <li class="nav-item">
+                  <a class="smooth-scroll" href="http://rai-shatrughan.github.io/#skills">Skills</a>
+                </li>
+              
+              
+                
+                
+                  
+                
+                <li class="nav-item">
+                  <a class="smooth-scroll" href="http://rai-shatrughan.github.io/#recent-posts">Recent Posts</a>
+                </li>
+              
+            
+              
+            
+          </ul>
+          
+        </div>
+        
+        
+        <div class="col-md-4 col-sm-12">
+          <h5>Contact me:</h5>
+          <ul>
+            
+              
+                <li><a href=mailto:shatrughan@no-public-email target="_blank" rel="noopener">
+                  <span><i class="fas fa-envelope"></i></span> <span>shatrughan@no-public-email</span>
+                </a></li>
+              
+            
+          </ul>
+        </div>
+        
+        
+        
+      </div>
+    </div>
+    
+    
+    <hr />
+    
+  </footer>
+
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="/js/navbar.js"></script>
+<script type="text/javascript" src="/js/plyr.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" defer src="/js/katex.min.js"></script>
+<script type="text/javascript" defer src="/js/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+<script src="/js/single.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+  </body>
+</html>
