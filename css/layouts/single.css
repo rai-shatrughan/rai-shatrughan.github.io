@@ -16,10 +16,10 @@ body {
 }
 
 .content-section {
-  flex: 60%;
-  max-width: 60%;
+  flex: 80%;
+  max-width: 80%;
   order: 2;
-  /* background-color: lightseagreen; */
+  background-color: lightseagreen;
   padding: 0;
   position: relative;
   padding-left: 1rem;
